@@ -75,17 +75,6 @@
             }
             return true;
           }
-          function checkDob(){
-            var dob = document.getElementById('dob').value;
-            if( dob == "mm/ dd/ yyyy"){
-              document.getElementById("dobErr").innerHTML = "* Date of Birth is required";
-              return false;
-            }
-            else{
-              document.getElementById("ageErr").innerHTML = "* ";
-            }
-            return true;
-          }
         </script>
     </head>
     <body>

@@ -63,22 +63,18 @@
             }
             return true;
           }
+<<<<<<< HEAD
+          function checkDob(){
+            var dob = document.getElementById('dob').value;
+            if( dob == "mm/ dd/ yyyy"){
+              document.getElementById("dobErr").innerHTML = "* Date of Birth is required";
+=======
           function checkAge(){
             var contact = document.getElementById('contact').value;
             var len=contact.length;
             if( len != 10 ){
               document.getElementById("ageErr").innerHTML = "* Specified contact cannot register";
-              return false;
-            }
-            else{
-              document.getElementById("ageErr").innerHTML = "* ";
-            }
-            return true;
-          }
-          function checkDob(){
-            var dob = document.getElementById('dob').value;
-            if( dob == "mm/ dd/ yyyy"){
-              document.getElementById("dobErr").innerHTML = "* Date of Birth is required";
+>>>>>>> 29c85cb94f2be04eca0631fe0964abddd931e5c6
               return false;
             }
             else{
