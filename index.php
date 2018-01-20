@@ -70,7 +70,7 @@
             }
             else
             {
-              document.getElementById("adddress").innerHTML = "* ";
+              document.getElementById("addressErr").innerHTML = "* ";
             }
             return true;
           }
@@ -88,7 +88,7 @@
           }
           function checkPercentage10(){
             var percentage10 = document.getElementById('percentage10').value;
-            if( percentage10 > 100 || isNaN(percentage10) || percentage12 == "") {
+            if( percentage10 > 100 || isNaN(percentage10) || percentage10 == "") {
 
               document.getElementById("percentage10Err").innerHTML = "* Invalid Input";
               return false;
