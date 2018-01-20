@@ -58,7 +58,7 @@
               return false;
             }
             else{
-              document.getElementById("ageErr").innerHTML = "* ";
+              document.getElementById("dobErr").innerHTML = "* ";
             }
             return true;
           }
@@ -78,11 +78,11 @@
             var contact = document.getElementById('contact').value;
             var len=contact.length;
             if( len != 10 ){
-              document.getElementById("ageErr").innerHTML = "* Invalid contact number";
+              document.getElementById("contactErr").innerHTML = "* Invalid contact number";
               return false;
             }
             else{
-              document.getElementById("ageErr").innerHTML = "* ";
+              document.getElementById("contactErr").innerHTML = "* ";
             }
             return true;
           }
@@ -168,7 +168,7 @@
           $company5 = test_input($_POST["company5"]);
 
           if($error == "none"){
-            $query = "insert into participant values(\"a\", \"".$lastName."\",\"".$firstName."\",\"".$address."\",\"".$email."\",".$age.",\"".$dob."\",\"".$contact."\",\"".$gender."\",".$percentage10.",".$percentage12.",\"".$ugCourse."\",\"".$ugCollege."\",".$ugCgpa.",\"".$fresher."\",".$backlogs.",\"".$ugYop."\",\"".$pgCourse."\",\"".$pgCollege."\",".$pgCgpa.",\"".$pgYop."\")";
+            $query = "insert into participant values(\"b\", \"".$lastName."\",\"".$firstName."\",\"".$address."\",\"".$email."\",".$age.",\"".$dob."\",\"".$contact."\",\"".$gender."\",".$percentage10.",".$percentage12.",\"".$ugCourse."\",\"".$ugCollege."\",".$ugCgpa.",\"".$fresher."\",".$backlogs.",\"".$ugYop."\",\"".$pgCourse."\",\"".$pgCollege."\",".$pgCgpa.",\"".$pgYop."\")";
             if(mysqli_query($dbConn, $query)){
               echo " New record created " ;
             }
