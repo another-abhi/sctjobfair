@@ -12,19 +12,56 @@
             if( percentage10 > 100 || isNaN(percentage10) ) {
 
               document.getElementById("percentage10Err").innerHTML = "* Invalid Input";
+              return false;
             }
             else{
               document.getElementById("percentage10Err").innerHTML = "* ";
             }
+            return true;
           }
           function checkFirstName(){
             var firstName = document.getElementById('first_name').value;
-            if( firstName="" ){
+            if( firstName == "" ){
               document.getElementById("firstNameErr").innerHTML = "* First name is required";
+              return false;
             }
             else{
               document.getElementById("firstNameErr").innerHTML = "* ";
             }
+            return true;
+          }
+          function checkLastName(){
+            var lastName = document.getElementById('last_name').value;
+            if( lastName == "" ){
+              document.getElementById("lastNameErr").innerHTML = "* Last name is required";
+              return false;
+            }
+            else{
+              document.getElementById("lastNameErr").innerHTML = "* ";
+            }
+            return true;
+          }
+          function checkEmail(){
+            var email = document.getElementById('email').value;
+            if( email == "" ){
+              document.getElementById("emailErr").innerHTML = "* Email is required";
+              return false;
+            }
+            else{
+              document.getElementById("emailErr").innerHTML = "* ";
+            }
+            return true;
+          }
+          function checkAge(){
+            var age = document.getElementById('age').value;
+            if( age < 18 || age > 25 ){
+              document.getElementById("ageErr").innerHTML = "* Specified age cannot register";
+              return false;
+            }
+            else{
+              document.getElementById("ageErr").innerHTML = "* ";
+            }
+            return true;
           }
         </script>
     </head>
@@ -123,7 +160,7 @@
           <input type="date" id="dob" name="dob" value="">
 
           <label for="address">Address: </label>
-          <span class="error" id="">* </span>
+          <span class="error" id="addressErr">* </span>
           <textarea id="address" name="address"></textarea>
 
           <label for="contact">Contact: </label>
