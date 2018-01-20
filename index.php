@@ -47,7 +47,7 @@
         $firstName = $lastName = $email = $age = $dob = $address = $contact = $gender = $percentage10 = $percentage12 = $ugCourse = $ugCollege = $ugCgpa = $ugYop = $backlogs = $fresher = $pgCourse = $pgCollege = $pgYop = $company1 = $company2 = $company3 = $company4 = $company5 = "";
         $error = "none";
         if( $_SERVER["REQUEST_METHOD"] == "POST"){
-          
+
           $firstName = test_input($_POST["first_name"]);
           $lastName = test_input($_POST["last_name"]);
           $email = test_input($_POST["email"]);
@@ -73,7 +73,7 @@
           $company3 = test_input($_POST["company3"]);
           $company4 = test_input($_POST["company4"]);
           $company5 = test_input($_POST["company5"]);
-          
+
           if($error == "none"){
             $query = "insert into participant values(\"a\", \"".$lastName."\",\"".$firstName."\",\"".$address."\",\"".$email."\",".$age.",\"".$dob."\",\"".$contact."\",\"".$gender."\",".$percentage10.",".$percentage12.",\"".$ugCourse."\",\"".$ugCollege."\",".$ugCgpa.",\"".$fresher."\",".$backlogs.",\"".$ugYop."\",\"".$pgCourse."\",\"".$pgCollege."\",".$pgCgpa.",\"".$pgYop."\")";
             if(mysqli_query($dbConn, $query)){
@@ -94,25 +94,25 @@
       ?>
 
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-      
+
         <h1>Sign Up</h1>
-        
+
         <fieldset>
           <legend><span class="number">1</span>Personal info</legend>
-          <label for="first_name">First Name:</label> 
+          <label for="first_name">First Name:</label>
           <span class="error" id="firstNameErr">* </span>
           <input type="text" id="first_name" name="first_name" value="">
-          
 
-          <label for="last_name">Last Name: </label> 
+
+          <label for="last_name">Last Name: </label>
           <span class="error" id="lastNameErr">* </span>
           <input type="text" id="last_name" name="last_name" value="">
-          
-          
+
+
           <label for="email">Email: </label>
           <span class="error" id="emailErr">* </span>
           <input type="email" id="email" name="email" value="">
-          
+
 
           <label for="age">Age: </label>
           <span class="error" id="ageErr">* </span>
@@ -127,29 +127,29 @@
           <textarea id="address" name="address"></textarea>
 
           <label for="contact">Contact: </label>
-          <span class="error">* </span>
+          <span class="error" id="contactErr">* </span>
           <input type="text" id="contact" name="contact" size="10" maxlenght="10" minlength="10" value="">
 
           <label for="gender">Gender: </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="genderErr">* </span> <br>
           <input type="radio" id="gender" name="gender" value="m" checked> Male<br>
           <input type="radio" id="gender" name="gender" value="f"> Female<br>
 
         </fieldset>
-        
+
         <fieldset>
           <legend><span class="number">2</span>Educational Details</legend>
-          
+
           <label for="percentage10">10th Percentage: </label>
           <span class="error" id="percentage10Err">* </span> <br>
           <input type="text" id="percentage10" name="percentage10" onkeyup="checkPercentage10()">
 
           <label for="percentage12">12th Percentage: </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="percentage12Err">* </span> <br>
           <input type="text" id="percentage12" name="percentage12">
 
           <label for="ugcourse">Undergraduate Course: </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="ugCourseErr">* </span> <br>
           <select name="ugCourse">
           <?php
             $sql="SELECT * FROM ugcourse";
@@ -163,29 +163,29 @@
           </select>
 
           <label for="ugCollege">Undergraduate College: </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="ugCollegeErr">* </span> <br>
           <input type="text" id="ugCollege" name="ugCollege" value="">
 
           <label for="ugCgpa"> Undergraduate GPA/CGPA </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="ugCgpaErr">* </span> <br>
           <input type="text" id="ugCgpa" name="ugCgpa">
 
           <label for="ugYop">Year of Passing: </label>
-          <span class="error">* </span>
+          <span class="error" id="ugYopErr">* </span>
           <input type="number" id="ugYop" name="ugYop" value="2018" min="2015" max="2018">
 
           <label for="backlogs"> Number of backlogs </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="backlogsErr">* </span> <br>
           <input type="number" id="backlogs" name="backlogs" value="0">
 
           <label for="fresher">Fresher: </label>
-          <span class="error">* </span> <br>
-          <input type="radio" id="fresher" name="fresher" value="y" checked> Yes 
+          <span class="error" id="fresherErr">* </span> <br>
+          <input type="radio" id="fresher" name="fresher" value="y" checked> Yes
           <input type="radio" id="fresher" name="fresher" value="n"> No<br><br>
-          
+
 
           <label for="pgCourse">Postgraduate Course: </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="pgCourseErr">* </span> <br>
           <select name="pgCourse">
           <option value="none"> None </option>
           <?php
@@ -200,16 +200,16 @@
           </select>
 
           <label for="pgCollege">Postgraduate College: </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="pgCollegeErr">* </span> <br>
           <input type="text" id="pgCollege" name="pgCollege" value="">
 
 
           <label for="pgCgpa"> Postgraduate GPA/CGPA </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="pgCgpaErr">* </span> <br>
           <input type="text" id="pgCgpa" name="pgCgpa">
 
           <label for="pgYop">Year of Passing: </label>
-          <span class="error">* </span>
+          <span class="error" id="pgYopErr">* </span>
           <input type="number" id="pgYop" name="pgYop" value="" min="2015" max="2018">
 
         </fieldset>
@@ -218,7 +218,7 @@
           <legend><span class="number">3</span>Companies</legend>
 
           <label for="company1">Company 1 </label>
-          <span class="error">* </span> <br>
+          <span class="error" id="company1Err">* </span> <br>
           <select name="company1">
           <option value="none"> None </option>
           <?php
@@ -233,7 +233,7 @@
           </select>
 
           <label for="company2">Company 2 </label>
-          <span class="error"> </span> <br>
+          <span class="error" id="company2Err"> </span> <br>
           <select name="company2">
           <option value="none"> None </option>
           <?php
@@ -248,7 +248,7 @@
           </select>
 
           <label for="company3">Company 3 </label>
-          <span class="error"> </span> <br>
+          <span class="error" id="company3Err"> </span> <br>
           <select name="company3">
           <option value="none"> None </option>
           <?php
@@ -263,7 +263,7 @@
           </select>
 
           <label for="company4">Company 4 </label>
-          <span class="error"> </span> <br>
+          <span class="error" id="company4Err"> </span> <br>
           <select name="company4">
           <option value="none"> None </option>
           <?php
@@ -278,7 +278,7 @@
           </select>
 
           <label for="company5">Company 5 </label>
-          <span class="error"> </span> <br>
+          <span class="error" id="company5Err"> </span> <br>
           <select name="company5">
           <option value="none"> None </option>
           <?php
@@ -294,6 +294,6 @@
 
         <button type="submit">Sign Up</button>
       </form>
-      
+
     </body>
 </html>
