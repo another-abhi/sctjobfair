@@ -7,18 +7,6 @@
         <link rel="stylesheet" href="css/main.css">
 
         <script>
-          function checkPercentage10(){
-            var percentage10 = document.getElementById('percentage10').value;
-            if( percentage10 > 100 || isNaN(percentage10) ) {
-
-              document.getElementById("percentage10Err").innerHTML = "* Invalid Input";
-              return false;
-            }
-            else{
-              document.getElementById("percentage10Err").innerHTML = "* ";
-            }
-            return true;
-          }
           function checkFirstName(){
             var firstName = document.getElementById('first_name').value;
             if( firstName == "" ){
@@ -63,18 +51,6 @@
             }
             return true;
           }
-          function checkContact(){
-            var contact = document.getElementById('contact').value;
-            var len=contact.length;
-            if( len != 10 ){
-              document.getElementById("ageErr").innerHTML = "* Specified contact cannot register";
-              return false;
-            }
-            else{
-              document.getElementById("ageErr").innerHTML = "* ";
-            }
-            return true;
-          }
           function checkDob(){
             var dob = document.getElementById('dob').value;
             if( dob == "mm/ dd/ yyyy"){
@@ -86,6 +62,63 @@
             }
             return true;
           }
+          function checkAddress(){
+            var address = document.getElementById("address").value;
+            if( address == "" ){
+              document.getElementById("addressErr").innerHTML = "* Address cannot be empty";
+              return false;
+            }
+            else
+            {
+              document.getElementById("adddress").innerHTML = "* ";
+            }
+            return true;
+          }
+          function checkContact(){
+            var contact = document.getElementById('contact').value;
+            var len=contact.length;
+            if( len != 10 ){
+              document.getElementById("ageErr").innerHTML = "* Invalid contact number";
+              return false;
+            }
+            else{
+              document.getElementById("ageErr").innerHTML = "* ";
+            }
+            return true;
+          }
+          function checkPercentage10(){
+            var percentage10 = document.getElementById('percentage10').value;
+            if( percentage10 > 100 || isNaN(percentage10) || percentage12 == "") {
+
+              document.getElementById("percentage10Err").innerHTML = "* Invalid Input";
+              return false;
+            }
+            else{
+              document.getElementById("percentage10Err").innerHTML = "* ";
+            }
+            return true;
+          }
+          function checkPercentage12(){
+            var percentage12 = document.getElementById('percentage12').value;
+            if( percentage12 > 100 || isNaN(percentage12) || percentage12 == "") {
+
+              document.getElementById("percentage12Err").innerHTML = "* Invalid Input";
+              return false;
+            }
+            else{
+              document.getElementById("percentage12Err").innerHTML = "* ";
+            }
+            return true;
+          }
+
+          function validateForm(){
+            if( !checkFirstName() || !checkLastName() || !checkEmail() || !checkAge() || !checkDob() || !checkAddress() || !checkContact() || !checkPercentage10() || !checkPercentage12() ){
+              window.alert("Please rectify all indicated errors");
+              return false;
+            }
+            return true;
+          }
+
         </script>
     </head>
     <body>
@@ -153,7 +186,7 @@
       }
       ?>
 
-      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" onsubmit="return validateForm()">
 
         <h1>Sign Up</h1>
 
