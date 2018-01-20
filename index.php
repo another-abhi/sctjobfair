@@ -136,11 +136,9 @@
           echo "Connection failed : " . mysqli_connect_error();
         }
         echo "connected";
-        $firstNameErr = $lastNameErr = $emailErr = $ageErr = $dobErr = $addressErr = $contactErr = $percentage10Err = $percentage12Err =  $ugCollegeErr = $ucCgpaErr = $pgCpgaErr = $pgYopErr = "";
         $firstName = $lastName = $email = $age = $dob = $address = $contact = $gender = $percentage10 = $percentage12 = $ugCourse = $ugCollege = $ugCgpa = $ugYop = $backlogs = $fresher = $pgCourse = $pgCollege = $pgYop = $company1 = $company2 = $company3 = $company4 = $company5 = "";
         $error = "none";
         if( $_SERVER["REQUEST_METHOD"] == "POST"){
-
           $firstName = test_input($_POST["first_name"]);
           $lastName = test_input($_POST["last_name"]);
           $email = test_input($_POST["email"]);
@@ -166,7 +164,6 @@
           $company3 = test_input($_POST["company3"]);
           $company4 = test_input($_POST["company4"]);
           $company5 = test_input($_POST["company5"]);
-
           if($error == "none"){
             $query = "insert into participant values(\"b\", \"".$lastName."\",\"".$firstName."\",\"".$address."\",\"".$email."\",".$age.",\"".$dob."\",\"".$contact."\",\"".$gender."\",".$percentage10.",".$percentage12.",\"".$ugCourse."\",\"".$ugCollege."\",".$ugCgpa.",\"".$fresher."\",".$backlogs.",\"".$ugYop."\",\"".$pgCourse."\",\"".$pgCollege."\",".$pgCgpa.",\"".$pgYop."\")";
             if(mysqli_query($dbConn, $query)){
@@ -384,7 +381,7 @@
             }
           ?>
           </select>
-
+        </fieldset>
         <button type="submit">Sign Up</button>
       </form>
 
