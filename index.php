@@ -63,7 +63,7 @@
             }
             return true;
           }
-          function checkAge(){
+          function checkContact(){
             var contact = document.getElementById('contact').value;
             var len=contact.length;
             if( len != 10 ){
