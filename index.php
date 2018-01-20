@@ -161,34 +161,34 @@
           <legend><span class="number">1</span>Personal info</legend>
           <label for="first_name">First Name:</label>
           <span class="error" id="firstNameErr">* </span>
-          <input type="text" id="first_name" name="first_name" value="">
+          <input type="text" id="first_name" name="first_name" value="" onkeyup="checkFirstName()">
 
 
           <label for="last_name">Last Name: </label>
           <span class="error" id="lastNameErr">* </span>
-          <input type="text" id="last_name" name="last_name" value="">
+          <input type="text" id="last_name" name="last_name" value="" onkeyup="checkLastName()">
 
 
           <label for="email">Email: </label>
           <span class="error" id="emailErr">* </span>
-          <input type="email" id="email" name="email" value="">
+          <input type="email" id="email" name="email" value="" onkeyup="checkEmail()">
 
 
           <label for="age">Age: </label>
           <span class="error" id="ageErr">* </span>
-          <input type="number" id="age" name="age" min="18" max="40" value="">
+          <input type="number" id="age" name="age" min="18" max="40" value="" onkeyup="checkAge()">
 
           <label for="dob">Date of Birth: </label>
           <span class="error" id="dobErr">* </span>
-          <input type="date" id="dob" name="dob" value="">
+          <input type="date" id="dob" name="dob" value="" onkeyup="checkDob()">
 
           <label for="address">Address: </label>
           <span class="error" id="addressErr">* </span>
-          <textarea id="address" name="address"></textarea>
+          <textarea id="address" name="address" ></textarea>
 
           <label for="contact">Contact: </label>
           <span class="error" id="contactErr">* </span>
-          <input type="text" id="contact" name="contact" size="10" maxlenght="10" minlength="10" value="">
+          <input type="text" id="contact" name="contact" size="10" maxlenght="10" minlength="10" value="" onkeyup="checkContact()">
 
           <label for="gender">Gender: </label>
           <span class="error" id="genderErr">* </span> <br>
@@ -206,7 +206,7 @@
 
           <label for="percentage12">12th Percentage: </label>
           <span class="error" id="percentage12Err">* </span> <br>
-          <input type="text" id="percentage12" name="percentage12">
+          <input type="text" id="percentage12" name="percentage12" onkeyup="checkPercentage12()">
 
           <label for="ugcourse">Undergraduate Course: </label>
           <span class="error" id="ugCourseErr">* </span> <br>
@@ -231,7 +231,7 @@
           <input type="text" id="ugCgpa" name="ugCgpa">
 
           <label for="ugYop">Year of Passing: </label>
-          <span class="error" id="ugYopErr">* </span>
+          <span class="error" id="ugYopErr">* </span>age
           <input type="number" id="ugYop" name="ugYop" value="2018" min="2015" max="2018">
 
           <label for="backlogs"> Number of backlogs </label>
