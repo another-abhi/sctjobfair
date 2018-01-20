@@ -63,6 +63,18 @@
             }
             return true;
           }
+          function checkAge(){
+            var contact = document.getElementById('contact').value;
+            var len=contact.length;
+            if( len != 10 ){
+              document.getElementById("ageErr").innerHTML = "* Specified contact cannot register";
+              return false;
+            }
+            else{
+              document.getElementById("ageErr").innerHTML = "* ";
+            }
+            return true;
+          }
         </script>
     </head>
     <body>
