@@ -59,4 +59,12 @@ insert into ugcourse values ('btech', "Bachelor of Technology");
 
 insert into pgcourse values ('mtech', "Master of Technology");
 
-insert into company values ('C01', "TCS");
+insert into company values ('', "");
+insert into company values ('tcs', "Tata Consultancy Service");
+insert into company values ('infosys', "Infosys");
+insert into company values ('tataelxsi', "Tata Elxsi");
+insert into company values ('asus', "ASUS");
+insert into company values ('dell', "Dell");
+insert into company values ('amazon', "Amazon");
+
+
