@@ -1,3 +1,4 @@
+<html>
   <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,7 +90,6 @@
           function checkPercentage10(){
             var percentage10 = document.getElementById('percentage10').value;
             if( percentage10 > 100 || isNaN(percentage10) || percentage10 == "") {
-
               document.getElementById("percentage10Err").innerHTML = "* Invalid Input";
               return false;
             }
@@ -101,7 +101,6 @@
           function checkPercentage12(){
             var percentage12 = document.getElementById('percentage12').value;
             if( percentage12 > 100 || isNaN(percentage12) || percentage12 == "") {
-
               document.getElementById("percentage12Err").innerHTML = "* Invalid Input";
               return false;
             }
@@ -110,7 +109,46 @@
             }
             return true;
           }
-
+          function checkUgCollege()
+          {
+            var ugCollege = document.getElementById('ugCollege').value;
+            if( ugCollege == "" ){
+              document.getElementById('ugCollegeErr').innerHTML = "* Specify college";
+              return false;
+            }
+            else{
+              document.getElementById('ugCollegeErr').innerHTML = "* ";
+            }
+          }
+          function checkUgCgpa()
+          {
+            var ugCgpa = document.getElementById('ugCgpa').value;
+            if( ugCgpa == "" ){
+              document.getElementById('ugCgpa').innerHTML = "* Specify college";
+              return false;
+            }
+            else{
+              document.getElementById('ugCgpa').innerHTML = "* ";
+            }
+          }
+          function pgCourseChange()
+          {
+            var pgCourseIp = document.getElementById('pgCourse');
+            var pgCourse = pgCourseIp.options[pgCourseIp.selectedIndex].value;
+            console.log(pgCourse);
+            if( pgCourse == "none" ){
+              console.log("disabling pg inputs");
+              document.getElementById('pgCollege').setAttribute('disabled',"");
+              document.getElementById('pgCgpa').setAttribute('disabled',"");
+              document.getElementById('pgYop').setAttribute('disabled',"");
+            }
+            else{
+              console.log("enabling pg inputs");
+              document.getElementById('pgCollege').removeAttribute('disabled');
+              document.getElementById('pgCgpa').removeAttribute('disabled');
+              document.getElementById('pgYop').removeAttribute('disabled');
+            }
+          }
           function validateForm(){
             if( !checkFirstName() || !checkLastName() || !checkEmail() || !checkAge() || !checkDob() || !checkAddress() || !checkContact() || !checkPercentage10() || !checkPercentage12() ){
               window.alert("Please rectify all indicated errors");
@@ -125,8 +163,8 @@
 
       <?php
         ini_set('display_errors', 1);
-      ini_set('display_startup_errors', 1);
-      error_reporting(E_ALL);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
         $servername = "localhost";
         $username = "root";
         $password = "Kannan@119504";
@@ -256,15 +294,15 @@
           <span class="error" id="ugCollegeErr">* </span> <br>
           <input type="text" id="ugCollege" name="ugCollege" value="">
 
-          <label for="ugCgpa"> Undergraduate GPA/CGPA </label>
+          <label for="ugCgpa">Undergraduate GPA/CGPA: </label>
           <span class="error" id="ugCgpaErr">* </span> <br>
           <input type="text" id="ugCgpa" name="ugCgpa">
 
           <label for="ugYop">Year of Passing: </label>
-          <span class="error" id="ugYopErr">* </span>age
+          <span class="error" id="ugYopErr">* </span>
           <input type="number" id="ugYop" name="ugYop" value="2018" min="2015" max="2018">
 
-          <label for="backlogs"> Number of backlogs </label>
+          <label for="backlogs">Number of backlogs: </label>
           <span class="error" id="backlogsErr">* </span> <br>
           <input type="number" id="backlogs" name="backlogs" value="0">
 
@@ -276,14 +314,14 @@
 
           <label for="pgCourse">Postgraduate Course: </label>
           <span class="error" id="pgCourseErr">* </span> <br>
-          <select name="pgCourse">
+          <select name="pgCourse" id="pgCourse" onchange="pgCourseChange()">
           <option value="none"> None </option>
           <?php
             $sql="SELECT * FROM pgcourse";
             $result = mysqli_query($dbConn, $sql);
             if(mysqli_num_rows($result) > 0 ){
               while($row = mysqli_fetch_assoc($result)){
-                echo '<option value="' . $row["pgcourseId"] . '">' . $row["pgcoursename"] . '</option>';
+                echo '<option value="' . $row["pgcourseid"] . '">' . $row["pgcoursename"] . '</option>';
               }
             }
           ?>
@@ -291,23 +329,23 @@
 
           <label for="pgCollege">Postgraduate College: </label>
           <span class="error" id="pgCollegeErr">* </span> <br>
-          <input type="text" id="pgCollege" name="pgCollege" value="">
+          <input type="text" id="pgCollege" name="pgCollege" value="" disabled>
 
 
-          <label for="pgCgpa"> Postgraduate GPA/CGPA </label>
+          <label for="pgCgpa">Postgraduate GPA/CGPA: </label>
           <span class="error" id="pgCgpaErr">* </span> <br>
-          <input type="text" id="pgCgpa" name="pgCgpa">
+          <input type="text" id="pgCgpa" name="pgCgpa" disabled>
 
           <label for="pgYop">Year of Passing: </label>
           <span class="error" id="pgYopErr">* </span>
-          <input type="number" id="pgYop" name="pgYop" value="" min="2015" max="2018">
+          <input type="number" id="pgYop" name="pgYop" value="" min="2015" max="2018" disabled>
 
         </fieldset>
 
         <fieldset>
           <legend><span class="number">3</span>Companies</legend>
 
-          <label for="company1">Company 1 </label>
+          <label for="company1">Company 1: </label>
           <span class="error" id="company1Err">* </span> <br>
           <select name="company1">
           <option value="none"> None </option>
@@ -322,7 +360,7 @@
           ?>
           </select>
 
-          <label for="company2">Company 2 </label>
+          <label for="company2">Company 2: </label>
           <span class="error" id="company2Err"> </span> <br>
           <select name="company2">
           <option value="none"> None </option>
@@ -337,7 +375,7 @@
           ?>
           </select>
 
-          <label for="company3">Company 3 </label>
+          <label for="company3">Company 3: </label>
           <span class="error" id="company3Err"> </span> <br>
           <select name="company3">
           <option value="none"> None </option>
@@ -352,7 +390,7 @@
           ?>
           </select>
 
-          <label for="company4">Company 4 </label>
+          <label for="company4">Company 4: </label>
           <span class="error" id="company4Err"> </span> <br>
           <select name="company4">
           <option value="none"> None </option>
@@ -367,7 +405,7 @@
           ?>
           </select>
 
-          <label for="company5">Company 5 </label>
+          <label for="company5">Company 5: </label>
           <span class="error" id="company5Err"> </span> <br>
           <select name="company5">
           <option value="none"> None </option>
