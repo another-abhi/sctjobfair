@@ -141,12 +141,19 @@
               document.getElementById('pgCollege').setAttribute('disabled',"");
               document.getElementById('pgCgpa').setAttribute('disabled',"");
               document.getElementById('pgYop').setAttribute('disabled',"");
+              document.getElementById('pgCollegeErr').innerHTML = "";
+              document.getElementById('pgCgpaErr').innerHTML = "";
+              document.getElementById('pgYopErr').innerHTML = "";
             }
             else{
               console.log("enabling pg inputs");
               document.getElementById('pgCollege').removeAttribute('disabled');
               document.getElementById('pgCgpa').removeAttribute('disabled');
               document.getElementById('pgYop').removeAttribute('disabled');
+              document.getElementById('pgCollegeErr').innerHTML = "* ";
+              document.getElementById('pgCgpaErr').innerHTML = "* ";
+              document.getElementById('pgYopErr').innerHTML = "* ";
+
             }
           }
           function validateForm(){
@@ -313,7 +320,7 @@
 
 
           <label for="pgCourse">Postgraduate Course: </label>
-          <span class="error" id="pgCourseErr">* </span> <br>
+          <span class="error" id="pgCourseErr"> </span> <br>
           <select name="pgCourse" id="pgCourse" onchange="pgCourseChange()">
           <option value="none"> None </option>
           <?php
@@ -328,12 +335,12 @@
           </select>
 
           <label for="pgCollege">Postgraduate College: </label>
-          <span class="error" id="pgCollegeErr">* </span> <br>
+          <span class="error" id="pgCollegeErr"> </span> <br>
           <input type="text" id="pgCollege" name="pgCollege" value="" disabled>
 
 
           <label for="pgCgpa">Postgraduate GPA/CGPA: </label>
-          <span class="error" id="pgCgpaErr">* </span> <br>
+          <span class="error" id="pgCgpaErr"> </span> <br>
           <input type="text" id="pgCgpa" name="pgCgpa" disabled>
 
           <label for="pgYop">Year of Passing: </label>
