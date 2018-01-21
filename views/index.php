@@ -6,7 +6,10 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css">
-        <script src="js/main.js"></script>
+
+        <script>
+
+        </script>
     </head>
     <body>
 
