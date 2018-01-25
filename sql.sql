@@ -1,25 +1,31 @@
 CREATE TABLE participant (
-    pid varchar(100) primary key,
-    lastname varchar(255),
-    firstname varchar(255),
-    address varchar(255),
-    email varchar(255),
-    age int,
-    dob varchar(50),
-    contact varchar(10),
-    gender char(1),
-    percentage10 decimal,
-    percentage12 decimal,
-    ugcourseid varchar(20),
-    ugcollege varchar(100),
-    ugcgpa decimal,
-    fresher char(1),
-    backlogs int,
-    ugyop varchar(50),
-    pgcourseid varchar(20),
-    pgcollege varchar(100),
-    pgcgpa decimal,
-    pgyop varchar(50)
+    pid int not null AUTO_INCREMENT,
+    status char(20) not null,
+    companycount int not null,
+    regtime datetime default current_timestamp,
+    firstname varchar(255) not null,
+    lastname varchar(255) not null,
+    address varchar(255) not null,
+    email varchar(255) not null unique,
+    age int not null,
+    dob varchar(50) not null,
+    contact varchar(10) not null,
+    gender char(1) not null,
+    percentage10 decimal not null,
+    percentage12 decimal not null,
+    ugcourseid varchar(20) not null,
+    ugcollege varchar(100) not null,
+    ugcgpa decimal not null,
+    backlogs int not null,
+    ugyop varchar(50) not null,
+    fresher char(1) not null,
+    experience decimal not null,
+    expcompany varchar(50) not null,
+    pgcourseid varchar(20) not null,
+    pgcollege varchar(100) not null,
+    pgcgpa decimal not null,
+    pgyop varchar(50) not null,
+    primary key(pid)
 );
 create table config(
     maxcompnay int,
@@ -30,7 +36,7 @@ create table config(
     fee5 int
 );
 create table participation(
-    pid varchar(100),
+    pid int,
     cid varchar(100),
     primary key (pid,cid)
 );
@@ -55,6 +61,12 @@ CREATE TABLE company (
     cname varchar(255)
 );
 
+create table transactions (
+    pid int not null,
+    tid varchar(50) not null,
+    primary key( pid, tid )
+);
+
 insert into ugcourse values ('btech', "Bachelor of Technology");
 
 insert into pgcourse values ('mtech', "Master of Technology");
@@ -67,4 +79,5 @@ insert into company values ('asus', "ASUS");
 insert into company values ('dell', "Dell");
 insert into company values ('amazon', "Amazon");
 
+insert into participant(firstname, lastname, address, email, age, dob, contact, gender, percentage10, percentage12, ugcourseid, ugcollege, ugcgpa, fresher, experience, expcompany, backlogs, ugyop, pgcourseid, pgcollege, pgcgpa, pgyop) values ('akshay', 'venugopal', 'abc', 'abc@gmail.com', 20, '04NOV1995', '123', 'm', 90, 90, 'asd', 'sdf', 1, 'n', 2, 'acv', 0, '2014', 'asdf', 'sdf', 2, '2014');
 
