@@ -30,13 +30,42 @@
    </script>
    <body>
    	<?php
-   		session_unset();
-   		session_destroy();
    		session_start();
-   	?>
+      if( isset( $_SESSION["email"] ) )
+        unset($_SESSION["email"]);
+      
+      if( isset( $_SESSION["pid"] ) )
+        unset($_SESSION["pid"]);
+      
+      if( isset( $_SESSION["exist"] ) )
+        unset($_SESSION["exist"]);
+      
+      if( isset( $_SESSION["company1"]) )
+        unset($_SESSION["company1"]);
+      
+      if( isset( $_SESSION["company2"]) )
+        unset($_SESSION["company2"]);
+      
+      if( isset( $_SESSION["company3"]) )
+        unset($_SESSION["company3"]);
+      
+      if( isset( $_SESSION["company4"]) )
+        unset($_SESSION["company4"]);
+      
+      if( isset( $_SESSION["company5"]) )
+        unset($_SESSION["company5"]);
+
+      $message = "";
+      if( isset($_SESSION["success"] ) ){
+        $message = $_SESSION["success"];
+        unset($_SESSION["success"]);
+      }
+
+   ?>
    	<form action="detail_entry.php" method="post" onsubmit="return validateForm()">
 
    		<h1>Job Fair Registration</h1> 
+      <span id="message" name="message"> <?php echo $message ?> </span><br>
    		<span id="instructions" name="instructions">Please enter your correct email address</span><br><br>
    		<label for="email">Email : </label>
    		<span id="emailErr" class="error">* </span>

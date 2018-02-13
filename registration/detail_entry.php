@@ -6,8 +6,9 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css">
-        <script src="js/main.js"></script>
+        <script src="main.js"></script>
     </head>
+
     <body>
 
       <?php
@@ -15,9 +16,9 @@
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
         $servername = "localhost";
-        $username = "root";
-        $password = "Kannan@119504";
-        $dbname = "jobfair18reg";
+        $username = "ncscnlst_jobfair";
+        $password = "Adersh!23";
+        $dbname = "ncscnlst_jobfair18";
         $dbConn = mysqli_connect($servername, $username, $password, $dbname);
         if( !$dbConn ){
           echo "Connection failed : " . mysqli_connect_error();
@@ -30,7 +31,7 @@
           $email = test_input($_POST["email"]);
         }
         if($email == ""){
-          header("Location: http://localhost/~akshos/sctjobfair/registration/index.php");
+          header("Location: index.php");
           exit();
         }
 
@@ -41,9 +42,11 @@
         if(mysqli_num_rows($result) > 0){
           $row = mysqli_fetch_assoc($result);
           $pid = $row["pid"];
+          echo 'existing record : '.$pid.'<br>';
           $_SESSION["pid"] = $pid;
-          header("Location: http://localhost/~akshos/sctjobfair/registration/company_select.php");
+          header("Location: company_select.php");
         }
+        $_SESSION["pid"] = $pid;
         echo "email : " . $_SESSION["email"] . "<br>"; 
         function test_input($data){
           $data = trim($data);
@@ -60,14 +63,14 @@
         <fieldset>
           <legend><span class="number">1</span>Personal info</legend>
 
-          <label for="first_name">First Name:</label>
-          <span class="error" id="firstNameErr">* </span>
-          <input type="text" id="first_name" name="first_name" value="" onchnage="checkFirstName()">
+          <label for="first_name">Full Name:</label>
+          <span class="error" id="fullNameErr">* </span>
+          <input type="text" id="full_name" name="full_name" value="" onchnage="checkName()">
 
 
-          <label for="last_name">Last Name: </label>
+<!--           <label for="last_name">Last Name: </label>
           <span class="error" id="lastNameErr">* </span>
-          <input type="text" id="last_name" name="last_name" value="" onchange="checkLastName()">
+          <input type="text" id="last_name" name="last_name" value="" onchange="checkLastName()"> -->
 
 
           <label for="email">Email: </label>
