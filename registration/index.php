@@ -39,11 +39,13 @@
       if( isset($_SESSION["login"]) )
         unset($_SESSION["login"]);
       
+      $storedPassword = 'SctJobFair@18';
+
       $_SESSION["login"] = false;
       if( $_SERVER["REQUEST_METHOD"] == "POST"){
         if( isset($_POST["password"]) ){
           $password = $_POST["password"];
-          if($password == "abc"){
+          if($password == $storedPassword){
             $_SESSION["login"] = true;
             header("Location: email.php");
             exit();

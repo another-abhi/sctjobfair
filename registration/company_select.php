@@ -299,11 +299,9 @@
           <span class="error" id="company1Err">* </span> <br>
           <select name="company1" id="company1" >
           <?php
-            if($companyCount>0){
+            if($companyCount>0)
                echo '<option value="' . $companies[0][0] . '" selected>' . $companies[0][1] . '</option>'; 
-            }
-            else
-              echo '<option value="none" selected> None </option>';
+            echo '<option value="none"> None </option>';
             $sql="SELECT * FROM company";
             $result = mysqli_query($dbConn, $sql);
             if(mysqli_num_rows($result) > 0 ){
@@ -319,11 +317,9 @@
               <span class="error" id="company2Err"></span> <br>
               <select name="company2" id="company2">
               <?php
-                if($companyCount>1){
+                if($companyCount>1)
                     echo '<option value="' . $companies[1][0] . '" selected>' . $companies[1][1] . '</option>'; 
-                }
-                else
-                  echo '<option value="none" selected> None </option>';
+                echo '<option value="none"> None </option>';
                 $sql="SELECT * FROM company";
                 $result = mysqli_query($dbConn, $sql);
                 if(mysqli_num_rows($result) > 0 ){
@@ -340,11 +336,9 @@
               <span class="error" id="company3Err"></span> <br>
               <select name="company3" id="company3">
               <?php
-                if($companyCount>2){
+                if($companyCount>2)
                     echo '<option value="' . $companies[2][0] . '" selected>' . $companies[2][1] . '</option>'; 
-                }
-                else
-                  echo '<option value="none" selected> None </option>';
+                echo '<option value="none"> None </option>';
                 $sql="SELECT * FROM company";
                 $result = mysqli_query($dbConn, $sql);
                 if(mysqli_num_rows($result) > 0 ){
@@ -361,11 +355,9 @@
               <span class="error" id="company4Err"></span> <br>
               <select name="company4" id="company4">
               <?php
-                if($companyCount>3){
+                if($companyCount>3)
                     echo '<option value="' . $companies[3][0] . '" selected>' . $companies[3][1] . '</option>'; 
-                }
-                else
-                  echo '<option value="none" selected> None </option>';
+                echo '<option value="none"> None </option>';
                 $sql="SELECT * FROM company";
                 $result = mysqli_query($dbConn, $sql);
                 if(mysqli_num_rows($result) > 0 ){
@@ -384,11 +376,9 @@
               <span class="error" id="company5Err"></span> <br>
               <select name="company5" id="company5" >
               <?php
-                if($companyCount>4){
+                if($companyCount>4)
                     echo '<option value="' . $companies[4][0] . '" selected>' . $companies[4][1] . '</option>'; 
-                }
-                else
-                  echo '<option value="none" selected> None </option>';
+                echo '<option value="none"> None </option>';
                 $sql="SELECT * FROM company";
                 $result = mysqli_query($dbConn, $sql);
                 if(mysqli_num_rows($result) > 0 ){

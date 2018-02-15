@@ -53,11 +53,13 @@ CREATE TABLE company (
 insert into ugcourse values ('btech', "Bachelor of Technology");
 insert into ugcourse values ('diploma', "Diploma");
 insert into ugcourse values ('bcom', "Bcom");
-insert into ugcourse values ('ba', "BA");   
+insert into ugcourse values ('ba', "BA");
+insert into ugcourse values ('bsc', "Bachelor of Science");   
 
 insert into pgcourse values ('mtech', "Master of Technology");
 insert into pgcourse values ('ma', "MA");
 insert into pgcourse values ('mba', "MBA");
+insert into pgcourse values ('msc', "Master of Science");
 
 insert into company values ('attinad', "Attinad Software");
 insert into company values ('carestack', "Carestack");
@@ -73,6 +75,8 @@ insert into company values ('yarab', "Yarab");
 insert into company values ('orisys', "Orisys");
 insert into company values ('ars', "ARS T&TT");
 insert into company values ('interland', "Interland");
+insert into company values ('autobahn', "Autobahn Trucking");
+
 
 insert into company values ('', "");
 insert into company values ('', "");

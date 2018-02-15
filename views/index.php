@@ -17,6 +17,15 @@
         <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css">
         <script src="js/main.js"></script>
+
+        <style>
+/*        .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+            background-color: #cccc99;
+        }*/
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+          background-color: #cccc99;
+        }
+        </style>
     </head>
     <body>
 
@@ -34,6 +43,7 @@
         }
         echo "connected<br>";
 
+        session_start();
         $tableData = array();
         $tableIndex = 0;
         $conditionString = "";
@@ -57,119 +67,157 @@
           $pidFilter = test_input($_POST["pid"]);
           $genderFilter = $_POST["gender"];
           $paymentFilter = $_POST["payment"];
+          $backlogFilterType = $_POST["backlogType"];
+          $backlogFilter = $_POST["backlog"];
 
           $conditionString = $company1Filter.' '.$c2Include.' '.$company2Filter.' '.$c3Include.' '.$company3Filter.' '.$c4Include.' '.$company4Filter.' '.$c5Include.' '.$company5Filter;
           $conditionString .= " | Count : ".$companyCountFilterType.' '.$companyCountFilter;
           $conditionString .= " | College : ".$collegeFilter;
+          $conditionString .= " | Backlog : ".$backlogFilterType.' '.$backlogFilter;
           $conditionString .= " | Payment : ".$paymentFilter;
           $conditionString .= " | Branch : ".$branchFilter;
           $conditionString .= " | Gender : ".$genderFilter;
 
           $pidList = array();
 
-          $sqlQuery = "select * from participant;";
-          $result = mysqli_query($dbConn, $sqlQuery);
-          for($i = 0; $row = mysqli_fetch_assoc($result); $i++){
-            $pidList[$i] = $row["pid"];
-            $companyList = array();
-            // echo $row["fullname"].'<br>';
-            // echo $i.'<br>';
-            // echo $pidList[$i].'<br>';
-            $sqlQuery = "select cid from participation where pid=".$pidList[$i].";";
-            $result2 = mysqli_query($dbConn, $sqlQuery);
-            for($j = 0; $row2 = mysqli_fetch_assoc($result2); $j++){
-              $companyList[$j] = $row2["cid"];
-            }
-
-            $flag = true;
-            $present = false;
-            
-            if($company1Filter != "any")
-              if( !in_array($company1Filter, $companyList) ) //check if company 1 is present
-                $flag = false;
-
-            if($company2Filter != "any"){ //company 2 filter is present
-              $present = in_array($company2Filter, $companyList);
-              // echo 'c2Include : '.$c2Include.'<br>';
-              if($c2Include == "a" && !$present){
-                $flag = false;
-                // echo 'no company 2<br>';
+          
+          if($pidFilter != ""){
+            $sqlQuery = "select * from participant where pid=".$pidFilter." ;";
+            $result = mysqli_query($dbConn, $sqlQuery);
+            if(mysqli_num_rows($result) > 0 ){
+              $row = mysqli_fetch_assoc($result);
+              $companyList = array();
+              $sqlQuery = "select cid from participation where pid=".$pidFilter.";";
+              $result2 = mysqli_query($dbConn, $sqlQuery);
+              for($j = 0; $row2 = mysqli_fetch_assoc($result2); $j++){
+                $companyList[$j] = $row2["cid"];
               }
-              else if($c2Include == "o" && $present){
-                $flag = true;
-              }
-              else if($c2Include == "n" && $present){
-                $flag = false;
-              }
-            }
-
-            if($company3Filter != "any"){ //company 3 filter is present
-              $present = in_array($company3Filter, $companyList);
-              if($c3Include == "a" && $present && $flag)
-                $flag = true;
-              else if($c3Include == "o" && $present)
-                $flag = true;
-              else if($c3Include == "n" && $present)
-                $flag = false;
-            }
-
-            if($company4Filter != "any"){ //company 4 filter is present
-              $present = in_array($company4Filter, $companyList);
-              if($c4Include == "a" && $present && $flag)
-                $flag = true;
-              else if($c4Include == "o" && $present)
-                $flag = true;
-              else if($c4Include == "n" && $present)
-                $flag = false;
-            }
-
-            if($company5Filter != "any"){ //company 5 filter is present
-              $present = in_array($company5Filter, $companyList);
-              if($c5Include == "a" && $present && $flag)
-                $flag = true;
-              else if($c5Include == "o" && $present)
-                $flag = true;
-              else if($c5Include == "n" && $present)
-                $flag = false;
-            }
-
-            if($companyCountFilterType != "any"){
-              // echo 'count filtering <br>';
-              // echo 'compant count : '.count($companyList).'<br>';
-              // echo 'company filter : '.$companyCountFilter.'<br>';
-              if($companyCountFilterType == "lesser" && count($companyList) >= $companyCountFilter)
-                $flag = false;
-              if($companyCountFilterType == "greater" && count($companyList) <= $companyCountFilter)
-                $flag = false;
-              if($companyCountFilterType == "equal" && count($companyList) != $companyCountFilter)
-                $flag = false;
-            }
-
-            if($paymentFilter == "paid" && $row["paymentstatus"] == "notpaid")
-              $flag = false;
-            if($paymentFilter == "notpaid" && $row["paymentstatus"] == "paid")
-              $flag = false;
-
-            if($collegeFilter != "" && $row["ugcollege"] != $collegeFilter)
-              $flag = false;
-
-            if($branchFilter != "" && $row["ugbranch"] != $branchFilter)
-              $flag = false;
-
-            if($genderFilter == 'm' && $row["gender"] == 'f')
-              $flag = false;
-            if($genderFilter == 'f' && $row["gender"] == 'm')
-              $flag = false;
-
-            // echo $flag.'<br>';
-            if($flag){//include the pid
               $companies = implode(" | ", $companyList);
               $row["company"] = $companies;
               $tableData[$tableIndex] = $row;
               $tableIndex++;
-            } 
-            //print_r($tableData[0]);
+            }
+          }
+          else{
+            $sqlQuery = "select * from participant;";
+            $result = mysqli_query($dbConn, $sqlQuery);
+            for($i = 0; $row = mysqli_fetch_assoc($result); $i++){
+              $pidList[$i] = $row["pid"];
+              $companyList = array();
+              // echo $row["fullname"].'<br>';
+              // echo $i.'<br>';
+              // echo $pidList[$i].'<br>';
+              $sqlQuery = "select cid from participation where pid=".$pidList[$i].";";
+              $result2 = mysqli_query($dbConn, $sqlQuery);
+              for($j = 0; $row2 = mysqli_fetch_assoc($result2); $j++){
+                $companyList[$j] = $row2["cid"];
+              }
 
+              $flag = true;
+              $present = false;
+              
+              if($company1Filter != "any")
+                if( !in_array($company1Filter, $companyList) ) //check if company 1 is present
+                  $flag = false;
+
+              if($company2Filter != "any"){ //company 2 filter is present
+                $present = in_array($company2Filter, $companyList);
+                // echo 'c2Include : '.$c2Include.'<br>';
+                if($c2Include == "a" && !$present){
+                  $flag = false;
+                  // echo 'no company 2<br>';
+                }
+                else if($c2Include == "o" && $present){
+                  $flag = true;
+                }
+                else if($c2Include == "n" && $present){
+                  $flag = false;
+                }
+              }
+
+              if($company3Filter != "any"){ //company 3 filter is present
+                $present = in_array($company3Filter, $companyList);
+                if($c3Include == "a" && $present && $flag)
+                  $flag = true;
+                else if($c3Include == "o" && $present)
+                  $flag = true;
+                else if($c3Include == "n" && $present)
+                  $flag = false;
+              }
+
+              if($company4Filter != "any"){ //company 4 filter is present
+                $present = in_array($company4Filter, $companyList);
+                if($c4Include == "a" && $present && $flag)
+                  $flag = true;
+                else if($c4Include == "o" && $present)
+                  $flag = true;
+                else if($c4Include == "n" && $present)
+                  $flag = false;
+              }
+
+              if($company5Filter != "any"){ //company 5 filter is present
+                $present = in_array($company5Filter, $companyList);
+                if($c5Include == "a" && $present && $flag)
+                  $flag = true;
+                else if($c5Include == "o" && $present)
+                  $flag = true;
+                else if($c5Include == "n" && $present)
+                  $flag = false;
+              }
+
+              if($companyCountFilterType != "any"){
+                // echo 'count filtering <br>';
+                // echo 'compant count : '.count($companyList).'<br>';
+                // echo 'company filter : '.$companyCountFilter.'<br>';
+                if($companyCountFilterType == "lesser" && count($companyList) >= $companyCountFilter)
+                  $flag = false;
+                if($companyCountFilterType == "greater" && count($companyList) <= $companyCountFilter)
+                  $flag = false;
+                if($companyCountFilterType == "equal" && count($companyList) != $companyCountFilter)
+                  $flag = false;
+              }
+
+              if($backlogFilterType != 'any'){
+                if($backlogFilterType == 'lesser' && $row["backlogs"] >= $backlogFilter )
+                  $flag = false;
+                if($backlogFilterType == 'greater' && $row["backlogs"] <= $backlogFilter )
+                  $flag = false;
+                if($backlogFilterType == 'equal' && $row["backlogs"] != $backlogFilter )
+                  $flag = false;
+              }
+
+              if($paymentFilter == "paid" && $row["paymentstatus"] == "notpaid")
+                $flag = false;
+              if($paymentFilter == "notpaid" && $row["paymentstatus"] == "paid")
+                $flag = false;
+
+              if($collegeFilter != "" && $row["ugcollege"] != $collegeFilter)
+                $flag = false;
+
+              if($branchFilter != "" && $row["ugbranch"] != $branchFilter)
+                $flag = false;
+
+              if($genderFilter == 'm' && $row["gender"] == 'f')
+                $flag = false;
+              if($genderFilter == 'f' && $row["gender"] == 'm')
+                $flag = false;
+
+              // echo $flag.'<br>';
+              if($flag){//include the pid
+                $companies = implode(" | ", $companyList);
+                $row["company"] = $companies;
+                $tableData[$tableIndex] = $row;
+                $tableIndex++;
+              } 
+              //print_r($tableData[0]);
+            }
+            if( $tableIndex > 0 ){
+              $headers = array_keys($tableData[0]);
+              $_SESSION["condition"] = $conditionString;
+              $_SESSION["headers"] = $headers;
+              $_SESSION["data"] = $tableData;
+              $_SESSION["tableIndex"] = $tableIndex;
+            }
           }
         }
 
@@ -287,6 +335,13 @@
           <input type="radio" id="countType" name="countType" value="equal"> Equal
           <input type="number" id="companyCount" name="companyCount" min="0" max="5" value="">
           
+          <label>Backlogs: </label><br>
+          <input type="radio" id="backlogType" name="backlogType" value="any" checked> Any &nbsp;
+          <input type="radio" id="backlogType" name="backlogType" value="lesser"> Less &nbsp;
+          <input type="radio" id="backlogType" name="backlogType" value="greater"> Greater &nbsp;
+          <input type="radio" id="backlogType" name="backlogType" value="equal"> Equal &nbsp;
+          <input type="number" id="backlog" name="backlog" min="0" max="50" value="">
+
           <label>Payment : </label><br>
           <input type="radio" id="payment" name="payment" value="any" checked> Any &nbsp;
           <input type="radio" id="payment" name="payment" value="paid"> Paid &nbsp;
@@ -301,7 +356,7 @@
           <label>PID : </label><br>
           <input type="text" id="pid" name="pid" value="">
 
-          <label for="gender">Gender: </label>
+          <label for="gender">Gender: </label><br>
           <input type="radio" id="gender" name="gender" value="a" checked>Any &nbsp; &nbsp;
           <input type="radio" id="gender" name="gender" value="m">Male &nbsp; &nbsp;
           <input type="radio" id="gender" name="gender" value="f">Female<br><br>
@@ -314,6 +369,12 @@
         <h4><label>Filters : </label></h4>
         <span><label>&nbsp;<?php echo $conditionString; ?></label></span><br>
         <span><h3>COUNT : <?php echo count($tableData); ?></h3></span><br>
+        <span>
+          <?php
+          if($tableIndex > 0 ){
+            echo '<a href="pdfDownload.php" target="_blank">Download PDF</a><br><br>';
+          } 
+          ?>
 
         <div class="table-responsive">
           <table class="table table-striped table-bordered table-hover">
