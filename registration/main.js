@@ -127,6 +127,18 @@ function checkUgCollege(){
   return 0;
 }
 
+function checkUgBranch(){
+  var ugBranch = document.getElementById('ugBranch').value;
+  if( ugBranch == "" ){
+    document.getElementById('ugBranchErr').innerHTML = "* Specify UG course";
+    return 1;
+  }
+  else{
+    document.getElementById('ugBranchErr').innerHTML = "* ";
+    return 0;
+  }
+}
+
 function checkUgCgpa(){
   var ugCgpa = document.getElementById('ugCgpa').value;
   if( ugCgpa == "" || isNaN(ugCgpa) || ugCgpa>100 || (ugCgpa > 10 && ugCgpa < 20) ){
@@ -200,6 +212,7 @@ function checkPgCollege(){
   var pgCollege = document.getElementById('pgCollege').value;
   if( pgCollege == "" ){
     document.getElementById('pgCollegeErr').innerHTML = "* Specify College";
+    console.log("pg college err");
     return 1;
   }
   else{
@@ -215,6 +228,7 @@ function checkPgCgpa(){
   var pgCgpa = document.getElementById('pgCgpa').value;
   if( pgCgpa == "" || isNaN(pgCgpa) ){
     document.getElementById('pgCgpaErr').innerHTML = "* Invalid Input";
+    console.log("pg cgpa err");
     return 1;
   }
   else{
@@ -230,6 +244,7 @@ function checkPgYop(){
   var pgYop = document.getElementById('pgYop').value;
   if( pgYop == "" || isNaN(pgYop) || pgYop < 2015 || pgYop > 2018 ){
     document.getElementById('pgYopErr').innerHTML = "* Invalid Input";
+    console.log("pg yop err");
     return 1;
   }
   else{
@@ -278,6 +293,7 @@ function validateForm(){
   check += checkPercentage10();
   check += checkPercentage12();
   check += checkUgCollege();
+  check += checkUgBranch();
   check += checkUgCgpa();
   check += checkExperience();
   check += checkExpCompany();

@@ -14,6 +14,17 @@
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
+        session_start();
+        if(isset($_SESSION["login"]) ){
+            if( $_SESSION["login"] != true ){
+              header("Location: index.php");
+              exit();
+            }
+        }
+        else{
+            header("Location: index.php");
+            exit();
+        }
         $servername = "localhost";
         $username = "ncscnlst_jobfair";
         $password = "Adersh!23";
@@ -22,7 +33,7 @@
         if( !$dbConn ){
           echo "Connection failed : " . mysqli_connect_error();
         }
-        session_start();
+        
         $pid = isset($_SESSION["pid"]) ? $_SESSION["pid"] : "";
         if( $pid == "" ){
             echo "error : no pid";
@@ -98,7 +109,7 @@
                     exit();
                 }
                 $_SESSION["success"] = "SUCCESS";
-                header("Location: index.php");
+                header("Location: email.php");
                 exit();
             }
             else if( isset($_POST["company1"]) ){
@@ -135,7 +146,7 @@
                     $result = mysqli_query($dbConn, $sqlQuery);
                     $row = mysqli_fetch_assoc($result);
                     $paymentStatus = $row["paymentstatus"];
-                    if($paymentStatus != "not_paid")
+                    if($paymentStatus != "notpaid")
                         $prevCompnayCount = $row["companycount"];
                 }
                 $cost = getCost($companyCount) - getCost($prevCompnayCount);
@@ -147,16 +158,20 @@
 
         }
         else{
-            header("Location: http://localhost/~akshos/sctjobfair/registration/index.php");
+            header("Location: email.php");
             exit();
         }
-        echo $pid;
+        //echo $pid;
 
         function getCost($count){
             if($count == 1)
                 return 200;
+            if($count == 2)
+                return 400;
             if($count == 3)
                 return 500;
+            if($count == 4)
+                return 700;
             if($count == 5)
                 return 800;
             return 0;
@@ -175,7 +190,7 @@
         <span id="pid" name="pid">PID : <?php echo $pid ?> </span><br><br>
         <fieldset>
             <input type="radio" id="payment" name="payment" value="paid" checked> Paid<br>
-            <input type="radio" id="payment" name="payment" value="not_paid"> Not Paid<br>
+            <input type="radio" id="payment" name="payment" value="notpaid"> Not Paid<br>
         </fieldset>
         <button type="submit">Proceed</button>
     </body>

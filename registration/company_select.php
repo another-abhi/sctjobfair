@@ -14,6 +14,16 @@
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
+        if(isset($_SESSION["login"]) ){
+          if( $_SESSION["login"] != true ){
+            header("Location: index.php");
+            exit();
+          }
+        }
+        else{
+          header("Location: index.php");
+          exit();
+        }
         $servername = "localhost";
         $username = "ncscnlst_jobfair";
         $password = "Adersh!23";
@@ -26,29 +36,56 @@
         $err = 0;
         $exist = false;
         $companies = array();
-        $firstName = $lastName = $email = $age = $dob = $address = $contact = $gender = "";
+        $fullName = $email = $age = $dob = $address = $contact = $gender = "";
         $percentage10 = $percentage12 = $ugCourse = $ugCollege = $ugCgpa = $ugYop = $backlogs = $fresher = "";
         $experience = $expCompany = $pgCourse = $pgCollege = $pgCgpa = $pgYop = "";
-        $status = "";
+        $ugBranch = "";
+        $message = "";
         $companyCount = 0;
+        $paymentStatus = "not_paid";
+        $paymentmethod = "spot";
+        $regmethod = "spot";
+        $regTime = "";
+        $college = "";
 
         $pid = isset($_SESSION["pid"]) ? $_SESSION["pid"] : "";
         $email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
         unset($_SESSION["email"]);
-        echo "email : " . $email. "<br>"; 
-        echo "pid : ". $pid;
+        //echo "email : " . $email. "<br>"; 
+        //echo "pid : ". $pid;
         if($email == ""){
-            header("Location: index.php");
+            header("Location: email.php");
             exit();
         }
         if( $pid != "" ){
             $exist = true;
-            echo "existing record <br>";
+            $message = "Existing Record";
+            //echo "existing record <br>";
         }
         $_SESSION["exist"] = $exist;
-
+        $insert = true;
         if( $_SERVER["REQUEST_METHOD"] == "POST"){
-          if( !$exist ){
+          $change = isset($_POST["change"])? $_POST["change"] : "";
+          //echo $change.'<br>';
+          //echo $exist.'<br>';
+          if($exist == true && $change=="no" )
+            $insert = false;
+          if($exist == true && $change == "yes" ){
+            //echo 'deleting <br>';
+            $sqlQuery = "select * from participant where pid=".$pid." ;";
+            $result = mysqli_query($dbConn, $sqlQuery);
+            $row = mysqli_fetch_assoc($result);
+            $regTime = $row["regtime"];
+            $paymentstatus = $row["paymentstatus"];
+            $companyCount = $row["companycount"];
+            $paymentmethod = $row["paymentmethod"];
+            $regmethod = $row["regmethod"];
+            $sqlQuery = "delete from participant where pid=".$pid."; ";
+            if(!mysqli_query($dbConn, $sqlQuery))
+             echo 'error deleting exting record<br>';
+          }
+          if( $insert ){
+            //echo 'INSERTING <br>';
               $fullName = isset($_POST["full_name"]) ? test_input($_POST["full_name"]) : "";
               //$lastName = isset($_POST["last_name"]) ? test_input($_POST["last_name"]) : "";
               $age = isset($_POST["age"]) ? test_input($_POST["age"]) : "";
@@ -59,7 +96,8 @@
               $percentage10 = isset($_POST["percentage10"]) ? test_input($_POST["percentage10"]) : "";
               $percentage12 = isset($_POST["percentage12"]) ? test_input($_POST["percentage12"]) : "";
               $ugCourse = isset($_POST["ugCourse"]) ? test_input($_POST["ugCourse"]) : "";
-              $ugCollege = isset($_POST["ugCollege"]) ? test_input($_POST["ugCollege"]) : "";
+              $ugBranch = isset($_POST["ugBranch"]) ? strtoupper(test_input($_POST["ugBranch"])) : "";
+              $ugCollege = isset($_POST["ugCollege"]) ? strtoupper(test_input($_POST["ugCollege"])) : "";
               $ugCgpa = test_input($_POST["ugCgpa"]);
               $ugYop = test_input($_POST["ugYop"]);
               $backlogs = test_input($_POST["backlogs"]);
@@ -90,18 +128,26 @@
                 $err = $err|2;
               }
 
-              $paymentstatus = "not_paid";
-              $paymentmethod = "spot";
-              $regmethod = "spot";
-              $sqlQuery = "insert into participant(paymentstatus,paymentmethod,regmethod,companycount,fullname,address,email,age,dob,contact,gender,percentage10,percentage12,ugcourseid,ugcollege,ugcgpa,backlogs,ugyop,fresher,experience,expcompany,pgcourseid,pgcollege,pgcgpa,pgyop) values (";
+
+              if($exist == true ){
+                $sqlQuery = "insert into participant(pid,regtime,paymentstatus,paymentmethod,regmethod,companycount,fullname,address,email,age,dob,contact,gender,percentage10,percentage12,ugcourse,ugcollege,ugbranch,ugcgpa,backlogs,ugyop,fresher,experience,expcompany,pgcourse,pgcollege,pgcgpa,pgyop) values (";
+                $sqlQuery .= $pid.", \"".$regTime."\", ";
+              }
+              else  
+                $sqlQuery = "insert into participant(paymentstatus,paymentmethod,regmethod,companycount,fullname,address,email,age,dob,contact,gender,percentage10,percentage12,ugcourse,ugcollege,ugbranch,ugcgpa,backlogs,ugyop,fresher,experience,expcompany,pgcourse,pgcollege,pgcgpa,pgyop) values (";
+              
               $sqlQuery .= "\"".$paymentstatus."\", \"".$paymentmethod."\", \"".$regmethod."\", ".$companyCount.", ";
               $sqlQuery .= "\"".$fullName."\", \"".$address."\", \"".$email."\", ";
               $sqlQuery .= $age.", \"".$dob."\", \"".$contact."\", \"".$gender."\", ".$percentage10.", ".$percentage12.", ";
-              $sqlQuery .= "\"".$ugCourse."\", \"".$ugCollege."\", ".$ugCgpa.", ".$backlogs.", \"".$ugYop."\", \"".$fresher."\", ".$experience.", ";
+              $sqlQuery .= "\"".$ugCourse."\", \"".$ugCollege."\", \"".$ugBranch."\", ".$ugCgpa.", ".$backlogs.", \"".$ugYop."\", \"".$fresher."\", ".$experience.", ";
               $sqlQuery .= "\"".$expCompany."\", \"".$pgCourse."\", \"".$pgCollege."\", ".$pgCgpa.", \"".$pgYop."\" );";
               if( $err == 0 ){
                 if(mysqli_query($dbConn, $sqlQuery)){
-                    echo "New record created";
+                    //echo "New record created";
+                    if($exist)
+                      $message = "Record Modified";
+                    else
+                      $message = "New record created"; 
                 }
                 else{
                     echo "ERROR " . mysqli_error($dbConn); 
@@ -112,12 +158,20 @@
               }
             }
         } 
-        $sqlQuery = "select pid, companycount from participant where email=\"".$email."\" ;";
-        $result = mysqli_query($dbConn, $sqlQuery);
+        $sqlQuery = "select * from participant where pid=".$pid." ;";
+        if( !($result = mysqli_query($dbConn, $sqlQuery) ) ){
+          echo 'select query fail..<br>';
+        }
         if(mysqli_num_rows($result) > 0){
           $row = mysqli_fetch_assoc($result);
           $pid = $row["pid"];
-          $companyCount = $row["companycount"];
+          $paymentStatus = $row["paymentstatus"];
+          $college = $row["ugcollege"];
+          $sqlQuery = "select cid from participation where pid=".$pid.";";
+            $result = mysqli_query($dbConn, $sqlQuery);
+            $companyCount = mysqli_num_rows($result);
+            
+            //echo 'company count : '.$companyCount.'<br>';
           $_SESSION["pid"] = $pid;
         }
         $_SESSION["compnayCount"] = $companyCount;
@@ -154,24 +208,33 @@
               companyIp = document.getElementById('company5');
               var company5 = companyIp.options[companyIp.selectedIndex].value;
               var err = 0;
-              debugger;
               var count = 0;
-              if(company1 != "none")
+              var companyList = ["", "", "", "", ""];
+              if(company1 != "none"){
+                companyList[count] = company1;
                 count++;
-              if(company2 != "none")
-                count++;
-              if(company3 != "none")
-                count++;
-              if(company4 != "none")
-                count++;
-              if(company5 != "none")
-                count++;
-              if( count != 1 && count != 3 && count != 5){
-                document.getElementById('countErr').innerHTML = "Either 1, 3 or 5 companies can be selected " + count;
-                err+=1;
               }
-              else{
-                document.getElementById('countErr').innerHTML = "";
+              if(company2 != "none"){
+                companyList[count] = company2;
+                count++;
+              }
+              if(company3 != "none"){
+                companyList[count] = company3;
+                count++;
+              }
+              if(company4 != "none"){
+                companyList[count] = company4;
+                count++;
+              }
+              if(company5 != "none"){
+                companyList[count] = company5;
+                count++;
+              }
+              if( companyList.indexOf("carestack") != -1 ){
+                if( companyList.indexOf("incaetek") != -1 || companyList.indexOf("seqato") != -1 ){
+                  document.getElementById("msgErr").innerHTML = "Carestack and (Incaetek or Seqato) is not possible";
+                  err += 1;
+                }
               }
               if( company1 != "none" && (company1 == company2 || company1 == company3 || company1 == company4 || company1 == company5) ){
                 document.getElementById('company1Err').innerHTML = "* Duplicate selection detected";
@@ -222,9 +285,14 @@
     <body>
       <form action="payment.php" method="post" onsubmit="return checkCompanies()">
        <h1>Job Fair Registration</h1>
-       <span id="instructions" name="instructions">Please select your desired companies (Max : 5)</span><br><br>
-       <span id="pid" name="pid">PID : <?php echo $pid ?> </span><br><br>
-       <span class="error" id="countErr"> </span> <br>
+       <span id="msg"> <?php echo $message ?> </span><br>
+       <span id="emailMsg"> Email : <?php echo $email ?> </span><br>
+       <span id="pid" name="pid">PID : <?php echo $pid ?> </span><br>
+       <span id="paymentStatus" name="paymentStatus">Payment Status : <?php echo $paymentStatus ?> </span><br>
+       <span id="college" name="college">College : <?php echo $college ?><br><br>
+       <h2>Company Selection</h2>
+
+       <span class="error" id="msgErr"> </span> <br>
        <fieldset>
 
           <label for="company1">Company 1: </label>
@@ -294,7 +362,7 @@
               <select name="company4" id="company4">
               <?php
                 if($companyCount>3){
-                    echo '<option value="' . $companies[1][0] . '" selected>' . $companies[1][1] . '</option>'; 
+                    echo '<option value="' . $companies[3][0] . '" selected>' . $companies[3][1] . '</option>'; 
                 }
                 else
                   echo '<option value="none" selected> None </option>';
@@ -317,7 +385,7 @@
               <select name="company5" id="company5" >
               <?php
                 if($companyCount>4){
-                    echo '<option value="' . $companies[1][0] . '" selected>' . $companies[1][1] . '</option>'; 
+                    echo '<option value="' . $companies[4][0] . '" selected>' . $companies[4][1] . '</option>'; 
                 }
                 else
                   echo '<option value="none" selected> None </option>';
