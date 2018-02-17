@@ -13,6 +13,7 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 
+
         <link rel="stylesheet" href="css/normalize.css">
         <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css">
@@ -26,6 +27,7 @@
           background-color: #cccc99;
         }
         </style>
+
     </head>
     <body>
 
@@ -41,7 +43,6 @@
         if( !$dbConn ){
           echo "Connection failed : " . mysqli_connect_error();
         }
-        echo "connected<br>";
 
         session_start();
         $tableData = array();
@@ -69,7 +70,10 @@
           $paymentFilter = $_POST["payment"];
           $backlogFilterType = $_POST["backlogType"];
           $backlogFilter = $_POST["backlog"];
-
+          $payMethodFilter = $_POST["payMethod"];
+          $regMethodFilter = $_POST["regMethod"];
+          $fullNameFilter = $_POST["fullname"];
+          
           $conditionString = $company1Filter.' '.$c2Include.' '.$company2Filter.' '.$c3Include.' '.$company3Filter.' '.$c4Include.' '.$company4Filter.' '.$c5Include.' '.$company5Filter;
           $conditionString .= " | Count : ".$companyCountFilterType.' '.$companyCountFilter;
           $conditionString .= " | College : ".$collegeFilter;
@@ -79,7 +83,6 @@
           $conditionString .= " | Gender : ".$genderFilter;
 
           $pidList = array();
-
           
           if($pidFilter != ""){
             $sqlQuery = "select * from participant where pid=".$pidFilter." ;";
@@ -99,7 +102,7 @@
             }
           }
           else{
-            $sqlQuery = "select * from participant;";
+            $sqlQuery = "select * from participant order by pid asc;";
             $result = mysqli_query($dbConn, $sqlQuery);
             for($i = 0; $row = mysqli_fetch_assoc($result); $i++){
               $pidList[$i] = $row["pid"];
@@ -201,6 +204,23 @@
                 $flag = false;
               if($genderFilter == 'f' && $row["gender"] == 'm')
                 $flag = false;
+
+              if($payMethodFilter == "online" && $row["paymentmethod"] != "online")
+                $flag = false;
+              if($payMethodFilter == "spot" && $row["paymentmethod"] != "spot")
+                $flag = false;
+
+              if($regMethodFilter == "online" && $row["regmethod"] != "online")
+                $flag = false;
+              if($regMethodFilter == "spot" && $row["regmethod"] != "spot")
+                $file = false;
+
+              if($fullNameFilter != "" && !ereg("\.(".$fullNameFilter.")+", $row['fullname']))
+                $flag = false;
+              // if( $row["paymentstatus"] == 'paid' ){
+              //   $count = $row['companycount'];
+              //   if()
+              // }
 
               // echo $flag.'<br>';
               if($flag){//include the pid
@@ -360,6 +380,20 @@
           <input type="radio" id="gender" name="gender" value="a" checked>Any &nbsp; &nbsp;
           <input type="radio" id="gender" name="gender" value="m">Male &nbsp; &nbsp;
           <input type="radio" id="gender" name="gender" value="f">Female<br><br>
+
+          <label>Payment Method : </label><br>
+          <input type="radio" id="payMethod" name="payMethod" value="any" checked>Any &nbsp; &nbsp;
+          <input type="radio" id="payMethod" name="payMethod" value="online">Online &nbsp; &nbsp;
+          <input type="radio" id="payMethod" name="payMethod" value="spot">Spot &nbsp; &nbsp; <br><br>
+
+          <label>Registration Method : </label><br>
+          <input type="radio" id="regMethod" name="regMethod" value="any" checked>Any &nbsp; &nbsp;
+          <input type="radio" id="regMethod" name="regMethod" value="online">Online &nbsp; &nbsp;
+          <input type="radio" id="regMethod" name="regMethod" value="spot">Spot &nbsp; &nbsp;<br><br><br>
+
+
+          <label>Name : </label><br>
+          <input type="text" id="fullname" name="fullname" ><br>
 
         </fieldset>
         <button type="submit">Filter</button>

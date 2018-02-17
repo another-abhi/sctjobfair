@@ -42,7 +42,7 @@
         $ugBranch = "";
         $message = "";
         $companyCount = 0;
-        $paymentStatus = "not_paid";
+        $paymentStatus = "notpaid";
         $paymentmethod = "spot";
         $regmethod = "spot";
         $regTime = "";
@@ -76,7 +76,7 @@
             $result = mysqli_query($dbConn, $sqlQuery);
             $row = mysqli_fetch_assoc($result);
             $regTime = $row["regtime"];
-            $paymentstatus = $row["paymentstatus"];
+            $paymentStatus = $row["paymentstatus"];
             $companyCount = $row["companycount"];
             $paymentmethod = $row["paymentmethod"];
             $regmethod = $row["regmethod"];
@@ -136,7 +136,7 @@
               else  
                 $sqlQuery = "insert into participant(paymentstatus,paymentmethod,regmethod,companycount,fullname,address,email,age,dob,contact,gender,percentage10,percentage12,ugcourse,ugcollege,ugbranch,ugcgpa,backlogs,ugyop,fresher,experience,expcompany,pgcourse,pgcollege,pgcgpa,pgyop) values (";
               
-              $sqlQuery .= "\"".$paymentstatus."\", \"".$paymentmethod."\", \"".$regmethod."\", ".$companyCount.", ";
+              $sqlQuery .= "\"".$paymentStatus."\", \"".$paymentmethod."\", \"".$regmethod."\", ".$companyCount.", ";
               $sqlQuery .= "\"".$fullName."\", \"".$address."\", \"".$email."\", ";
               $sqlQuery .= $age.", \"".$dob."\", \"".$contact."\", \"".$gender."\", ".$percentage10.", ".$percentage12.", ";
               $sqlQuery .= "\"".$ugCourse."\", \"".$ugCollege."\", \"".$ugBranch."\", ".$ugCgpa.", ".$backlogs.", \"".$ugYop."\", \"".$fresher."\", ".$experience.", ";
@@ -158,7 +158,7 @@
               }
             }
         } 
-        $sqlQuery = "select * from participant where pid=".$pid." ;";
+        $sqlQuery = "select * from participant where email=\"".$email."\" ;";
         if( !($result = mysqli_query($dbConn, $sqlQuery) ) ){
           echo 'select query fail..<br>';
         }
@@ -167,10 +167,13 @@
           $pid = $row["pid"];
           $paymentStatus = $row["paymentstatus"];
           $college = $row["ugcollege"];
+          $paidCompanyCount = $row["companycount"];
           $sqlQuery = "select cid from participation where pid=".$pid.";";
-            $result = mysqli_query($dbConn, $sqlQuery);
-            $companyCount = mysqli_num_rows($result);
-            
+          $result = mysqli_query($dbConn, $sqlQuery);
+          $companyCount = mysqli_num_rows($result);
+          if( $paymentStatus == 'paid' ){
+            $paymentStatus = $paymentStatus . ' for ' . $paidCompanyCount . ' Company(s)';
+          }  
             //echo 'company count : '.$companyCount.'<br>';
           $_SESSION["pid"] = $pid;
         }

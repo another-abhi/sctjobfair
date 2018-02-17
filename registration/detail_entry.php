@@ -41,10 +41,20 @@
         $message = "";
         if( $_SERVER["REQUEST_METHOD"] == "POST" ){
           $email = test_input($_POST["email"]);
+          $pid = test_input($_POST["pid"]);
         }
-        if($email == ""){
+        if($email == "" && $pid == ""){
           header("Location: email.php");
           exit();
+        }
+        if($pid != "" ){
+          $sqlQuery = "select email from participant where pid=".$pid." ;";
+          if( !$result = mysqli_query($dbConn, $sqlQuery) ){
+            echo 'No Such PID';
+            exit();
+          }
+          $row = mysqli_fetch_assoc($result);
+          $email = $row["email"];
         }
 
         $_SESSION["email"] = $email;
@@ -189,7 +199,7 @@
 
           <label for="ugYop">Year of Passing: </label>
           <span class="error" id="ugYopErr">* </span>
-          <input type="number" id="ugYop" name="ugYop" value="<?php echo $ugYop; ?>" min="2015" max="2018">
+          <input type="number" id="ugYop" name="ugYop" value="<?php echo $ugYop; ?>" >
 
           <label for="backlogs">Number of backlogs: </label>
           <span class="error" id="backlogsErr">* </span> <br>
@@ -243,7 +253,7 @@
 
 	          <label for="pgYop">Year of Passing: </label>
 	          <span class="error" id="pgYopErr"> </span>
-	          <input type="number" id="pgYop" name="pgYop" value="2018" min="2015" max="2018" onchange="checkPgYop()" <?php if($pgCourse=="none")echo 'disabled'; ?> >
+	          <input type="number" id="pgYop" name="pgYop" onchange="checkPgYop()" <?php if($pgCourse=="none")echo 'disabled'; ?> >
 	      </div>
 
         <div <?php if($pid=="")echo 'style="display:none"'; ?> >

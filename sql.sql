@@ -76,6 +76,7 @@ insert into company values ('orisys', "Orisys");
 insert into company values ('ars', "ARS T&TT");
 insert into company values ('interland', "Interland");
 insert into company values ('autobahn', "Autobahn Trucking");
+insert into company values ('m2', "M Squared");
 
 
 insert into company values ('', "");

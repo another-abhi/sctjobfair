@@ -25,7 +25,10 @@
    	}
 
    	function validateForm(){
-   		return checkEmail();
+      if( document.getElementById("pid").value == "" ){
+   		 return checkEmail();
+      }
+      return true;
    	}
    </script>
    <body>
@@ -84,6 +87,10 @@
    		<label for="email">Email : </label>
    		<span id="emailErr" class="error">* </span>
    		<input type="text" id="email" name="email" value="" onchange="checkEmail()">
+
+      <label for="pid">PID : (either Email or PID)</label>
+      <span id="pidErr" class="error">* </span>
+      <input type="number" id="pid" name="pid" value="">
 
    		<button type="submit">Proceed</button>
    	</form>

@@ -43,7 +43,7 @@ function checkEmail(){
 
 function checkAge(){
   var age = document.getElementById('age').value;
-  if( age < 18 || age > 25 ){
+  if( age < 18 || age > 50 ){
     document.getElementById("ageErr").innerHTML = "* Specified age cannot register";
     return 1;
   }
@@ -242,7 +242,7 @@ function checkPgYop(){
     return 0;
   }
   var pgYop = document.getElementById('pgYop').value;
-  if( pgYop == "" || isNaN(pgYop) || pgYop < 2015 || pgYop > 2018 ){
+  if( pgYop == "" || isNaN(pgYop) || pgYop < 2000 || pgYop > 2050 ){
     document.getElementById('pgYopErr').innerHTML = "* Invalid Input";
     console.log("pg yop err");
     return 1;

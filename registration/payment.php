@@ -140,16 +140,26 @@
                     $companyCount++;
                     $_SESSION["company5"] = $company5;
                 }
-                $prevCompnayCount = 0;
+                $prevCompanyList = array();
+                $currentCompanyList = array($company1, $company2, $company3, $company4, $company5);
+                $currentCompanyList = array_slice($currentCompanyList, 0, $companyCount);
                 if( $exist != "" ){
                     $sqlQuery = "select paymentstatus, companycount from participant where pid=".$pid.";";
                     $result = mysqli_query($dbConn, $sqlQuery);
                     $row = mysqli_fetch_assoc($result);
+                    $companyCountCheck = $row['companycount'];
                     $paymentStatus = $row["paymentstatus"];
-                    if($paymentStatus != "notpaid")
-                        $prevCompnayCount = $row["companycount"];
+                    if($paymentStatus != "notpaid"){
+                        $sqlQuery = "select cid from participation where pid=".$pid.";";
+                        $result = mysqli_query($dbConn, $sqlQuery);
+                        for($j = 0; $row = mysqli_fetch_assoc($result); $j++){
+                          $prevCompanyList[$j] = $row["cid"];
+                        }
+                        if( sizeof($prevCompanyList) != $companyCountCheck )
+                            $prevCompanyList = array_slice($prevCompanyList, 0, $companyCountCheck);
+                    }
                 }
-                $cost = getCost($companyCount) - getCost($prevCompnayCount);
+                $cost = checkCompanyList($currentCompanyList) - checkCompanyList($prevCompanyList);
                 $_SESSION["cost"] = $cost;
             }
             else{
@@ -176,6 +186,25 @@
                 return 800;
             return 0;
         }
+
+        function checkCompanyList($companyList){
+            $count = sizeof($companyList);
+            if($count == 3)
+                return 500;
+            if($count == 5)
+                return 800;
+            $cost = 0;
+            if($count == 1)
+                $cost = 200;
+            if($count == 2)
+                $cost = 400;
+            if($count == 4)
+                $cost = 700;
+            if(in_array('m2', $companyList))
+                $cost -= 100;
+            return $cost;
+        }
+
       ?>
 
       <script>
